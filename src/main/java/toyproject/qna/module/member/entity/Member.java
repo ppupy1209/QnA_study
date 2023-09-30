@@ -1,6 +1,7 @@
 package toyproject.qna.module.member.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.qna.global.entity.BaseEntity;
@@ -24,4 +25,9 @@ public class Member extends BaseEntity {
     private Integer age;
 
 
+    @Builder
+    public Member(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
 }
