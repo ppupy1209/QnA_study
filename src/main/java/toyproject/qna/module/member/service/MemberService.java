@@ -16,10 +16,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
 
-    public void createMember(Member member) {
+    public Long createMember(Member member) {
         validateDuplicateMember(member); // 중복 회원 체크
-        memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
+
+        return savedMember.getId();
     }
+
+   
 
     private void validateDuplicateMember(Member member) {
         List<Member> members = memberRepository.findByName(member.getName());
