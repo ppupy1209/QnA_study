@@ -2,11 +2,9 @@ package toyproject.qna.module.member.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import toyproject.qna.global.utils.UriCreator;
+import toyproject.qna.module.member.dto.MemberPatchDto;
 import toyproject.qna.module.member.dto.MemberPostDto;
 import toyproject.qna.module.member.service.MemberService;
 
@@ -28,5 +26,14 @@ public class MemberController {
         URI location = UriCreator.createUri(MEMBER_DEFAULT_URL, memberId);
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(@PathVariable("member-id") Long memberId,
+                                      @Valid @RequestBody MemberPatchDto memberPatchDto) {
+
+        memberService.updateMember(memberPatchDto.toEntity(),memberId);
+
+        return ResponseEntity.ok().build();
     }
 }

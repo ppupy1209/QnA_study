@@ -24,10 +24,18 @@ public class Member extends BaseEntity {
     @Column(name = "age")
     private Integer age;
 
-
     @Builder
     public Member(String name, Integer age) {
         this.name = name;
+        this.age = age;
+    }
+
+
+    public void changeName(String name) {
+        this.name = name;
+    }
+
+    public void changeAge(Integer age) {
         this.age = age;
     }
 }
