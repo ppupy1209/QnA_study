@@ -39,6 +39,12 @@ public class MemberService {
         return findMember;
     }
 
+    public Member findMember(Long memberId) {
+        return findVerifiedMember(memberId);
+    }
+
+ 
+
     private Member findVerifiedMember(Long memberId) {
         Optional<Member> member = memberRepository.findById(memberId);
 

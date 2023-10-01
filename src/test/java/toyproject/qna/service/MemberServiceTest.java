@@ -121,5 +121,24 @@ public class MemberServiceTest {
         assertEquals(ExceptionCode.MEMBER_NOT_FOUND,exceptionCode);
     }
 
+    @Test
+    @DisplayName("회원 단건 조회 테스트")
+    public void findMemberTest() {
+        // given
+        Member member = Member.builder()
+                .name("kim")
+                .age(10)
+                .build();
+
+        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+
+        // when
+        Member findMember = memberService.findMember(anyLong());
+
+        // then
+        verify(memberRepository,times(1)).findById(anyLong());
+        assertEquals(member,findMember);
+    }
+
 
 }
