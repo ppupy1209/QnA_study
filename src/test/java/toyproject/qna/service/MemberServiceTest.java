@@ -4,15 +4,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import toyproject.qna.global.exception.BusinessLogicException;
 import toyproject.qna.global.exception.ExceptionCode;
+import toyproject.qna.module.member.dto.MemberResponseDto;
 import toyproject.qna.module.member.entity.Member;
 import toyproject.qna.module.member.repository.MemberRepository;
 import toyproject.qna.module.member.service.MemberService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -90,20 +95,24 @@ public class MemberServiceTest {
                 .age(10)
                 .build();
 
+        Member changedMember = Member.builder()
+                .name("lee")
+                .age(20)
+                .build();
+
         when(memberRepository.findById(anyLong())).thenReturn(Optional.ofNullable(member));
-
-        member.changeName("lee");
-
-        when(memberRepository.findByName("lee")).thenReturn(List.of());
+        when(memberRepository.findByName(changedMember.getName())).thenReturn(List.of());
 
         // when
-        Member updatedMember = memberService.updateMember(member, anyLong());
+        memberService.updateMember(changedMember, anyLong());
 
         // then
-        verify(memberRepository, times(1)).findByName(member.getName());
+        verify(memberRepository, times(1)).findByName(changedMember.getName());
         verify(memberRepository, times(1)).findById(anyLong());
-        assertEquals(member.getName(),updatedMember.getName());
-        assertEquals(member.getAge(),updatedMember.getAge());
+
+
+        assertEquals(changedMember.getName(),member.getName());
+        assertEquals(changedMember.getAge(),member.getAge());
     }
 
     @Test
@@ -138,6 +147,48 @@ public class MemberServiceTest {
         // then
         verify(memberRepository,times(1)).findById(anyLong());
         assertEquals(member,findMember);
+    }
+
+    @Test
+    @DisplayName("회원 리스트 조회 테스트")
+    public void findMembersTest() {
+        // given
+        Member member1 = Member.builder()
+                .name("kim")
+                .age(10)
+                .build();
+
+        Member member2 = Member.builder()
+                .name("lee")
+                .age(20)
+                .build();
+
+        Member member3 = Member.builder()
+                .name("park")
+                .age(30)
+                .build();
+
+        Page<Member> pageOfMembers = new PageImpl<>(List.of(member3,member2,member1));
+
+        when(memberRepository.findAll(PageRequest.of(0, 3, Sort.by("id").descending()))).thenReturn(
+                           pageOfMembers
+         );
+
+        // when
+        List<MemberResponseDto> expectedMembers = List.of(member3,member2,member1)
+                .stream()
+                .map(member -> new MemberResponseDto(member.getId(),member.getName(),member.getAge()))
+                .collect(Collectors.toList());
+
+        Page<Member> actualMembersPage = memberService.findMembers(0,3);
+
+        List<MemberResponseDto> actualMembers = actualMembersPage.getContent()
+                .stream()
+                .map(member -> new MemberResponseDto(member.getId(),member.getName(),member.getAge()))
+                .collect(Collectors.toList());
+
+        // then
+        assertIterableEquals(expectedMembers,actualMembers);
     }
 
 

@@ -1,6 +1,9 @@
 package toyproject.qna.module.member.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.qna.global.exception.BusinessLogicException;
@@ -43,7 +46,12 @@ public class MemberService {
         return findVerifiedMember(memberId);
     }
 
- 
+    public Page<Member> findMembers(int page, int size) {
+        return memberRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
+    }
+
+
+
 
     private Member findVerifiedMember(Long memberId) {
         Optional<Member> member = memberRepository.findById(memberId);
