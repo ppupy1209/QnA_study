@@ -59,4 +59,11 @@ public class MemberController {
         List<Member> members = pageMembers.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(MemberResponseDto.of(members),pageMembers),HttpStatus.OK);
     }
+
+    @DeleteMapping("/{member-id}")
+    public ResponseEntity deleteMember(@PathVariable("member-id") Long memberId) {
+        memberService.deleteMember(memberId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

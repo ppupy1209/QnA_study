@@ -50,7 +50,11 @@ public class MemberService {
         return memberRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
     }
 
+    public void deleteMember(Long memberId) {
+        Member member = findVerifiedMember(memberId);
 
+        memberRepository.delete(member);
+    }
 
 
     private Member findVerifiedMember(Long memberId) {
