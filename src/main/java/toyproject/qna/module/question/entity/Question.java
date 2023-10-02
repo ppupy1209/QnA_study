@@ -1,11 +1,15 @@
 package toyproject.qna.module.question.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.qna.global.entity.BaseEntity;
+import toyproject.qna.module.member.entity.Member;
 
 import javax.persistence.*;
+
+import static javax.persistence.FetchType.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,7 +22,20 @@ public class Question extends BaseEntity {
     private Long id;
 
     private String title;
-
     private String content;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @Builder
+    public Question(String title, String content,Member member) {
+        this.title = title;
+        this.content = content;
+        this.member = member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }
