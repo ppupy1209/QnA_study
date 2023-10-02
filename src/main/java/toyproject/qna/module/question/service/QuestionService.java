@@ -7,6 +7,7 @@ import toyproject.qna.global.exception.BusinessLogicException;
 import toyproject.qna.global.exception.ExceptionCode;
 import toyproject.qna.module.answer.dto.AnswerResponseDto;
 import toyproject.qna.module.answer.entity.Answer;
+import toyproject.qna.module.answer.repository.AnswerRepository;
 import toyproject.qna.module.member.entity.Member;
 import toyproject.qna.module.member.service.MemberService;
 import toyproject.qna.module.question.dto.QuestionResponseDto;
@@ -28,6 +29,8 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionTagRepository questionTagRepository;
+
+    private final AnswerRepository answerRepository;
     private final TagRepository tagRepository;
     private final MemberService memberService;
 
@@ -65,12 +68,17 @@ public class QuestionService {
     public QuestionResponseDto findQuestion(Long questionId) {
         Question question = findVerifiedQuestion(questionId);
 
-        List<AnswerResponseDto> answerResponseDtos = question.getAnswers().stream()
+        List<Answer> answers = answerRepository.findWithMemberByQuestionId(questionId); // 페치 조인
+
+        List<AnswerResponseDto> answerResponseDtos = answers.stream() 
                 .map(answer -> AnswerResponseDto.of(answer))
                 .collect(Collectors.toList());
 
        return QuestionResponseDto.of(question,answerResponseDtos);
     }
+
+//    @Transactional(readOnly = true)
+//    public List<Que>
 
 
     public Question findVerifiedQuestion(Long questionId) {
