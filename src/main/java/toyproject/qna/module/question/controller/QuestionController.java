@@ -2,11 +2,9 @@ package toyproject.qna.module.question.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import toyproject.qna.global.utils.UriCreator;
+import toyproject.qna.module.question.dto.QuestionPatchDto;
 import toyproject.qna.module.question.dto.QuestionPostDto;
 import toyproject.qna.module.question.service.QuestionService;
 
@@ -31,6 +29,15 @@ public class QuestionController {
         URI location = UriCreator.createUri(QUESTION_DEFAULT_URL,questionId);
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PatchMapping("/{question-id}")
+    public ResponseEntity patchQuestion(@PathVariable("question-id") Long questionId,
+                                        @Valid @RequestBody QuestionPatchDto questionPatchDto) {
+
+        questionService.updateQuestion(questionId,questionPatchDto.toEntity(),questionPatchDto.getTags());
+
+        return ResponseEntity.ok().build();
     }
 
 

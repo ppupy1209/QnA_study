@@ -9,6 +9,9 @@ import toyproject.qna.module.member.entity.Member;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.FetchType.*;
 
 @Getter
@@ -35,7 +38,17 @@ public class Question extends BaseEntity {
         this.member = member;
     }
 
+    public void changeTitle(String title) {
+        this.title = title;
+    }
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
+
     public void setMember(Member member) {
         this.member = member;
     }
+
+
 }

@@ -3,6 +3,8 @@ package toyproject.qna.module.question.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.qna.global.exception.BusinessLogicException;
+import toyproject.qna.global.exception.ExceptionCode;
 import toyproject.qna.module.member.entity.Member;
 import toyproject.qna.module.member.service.MemberService;
 import toyproject.qna.module.question.entity.Question;
@@ -32,11 +34,35 @@ public class QuestionService {
 
         Question savedQuestion = questionRepository.save(question);
 
-        // tag 가 포함되어 있다면 tag 저장
+        // Tag 가 포함되어 있다면 Tag 저장
         if(tags.length!=0) saveTag(question, tags);
 
         return savedQuestion.getId();
+    }
 
+    public Question updateQuestion(Long questionId, Question question, String[] tags) {
+        Question findQuestion = findVerifiedQuestion(questionId);
+
+        Optional.ofNullable(question.getContent())
+                .ifPresent(content -> findQuestion.changeContent(content));
+        Optional.ofNullable(question.getTitle())
+                .ifPresent(title -> findQuestion.changeTitle(title));
+
+//        if(tags.length!=0) {
+//            questionTagRepository.deleteByQuestionId(question.getId());
+//            saveTag(question,tags);
+//        }
+
+        return findQuestion;
+    }
+
+
+    private Question findVerifiedQuestion(Long questionId) {
+        Optional<Question> question = questionRepository.findById(questionId);
+
+        Question findQuestion = question.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
+
+        return findQuestion;
     }
 
     // Tag 저장 메서드
