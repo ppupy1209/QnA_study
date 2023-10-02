@@ -1,9 +1,6 @@
 package toyproject.qna.module.question.entity;
 
-import lombok.AccessLevel;
-import lombok.Generated;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import toyproject.qna.global.entity.BaseEntity;
 import toyproject.qna.module.tag.entity.Tag;
 
@@ -30,4 +27,17 @@ public class QuestionTag extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "tag_id")
     private Tag tag;
+
+    @Builder
+    public QuestionTag(Question question, Tag tag) {
+        this.question = question;
+        this.tag = tag;
+    }
+
+    public static QuestionTag createQuestionTag(Question question, Tag tag) {
+        return  QuestionTag.builder()
+                .question(question)
+                .tag(tag)
+                .build();
+    }
 }
