@@ -5,8 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.qna.global.exception.BusinessLogicException;
 import toyproject.qna.global.exception.ExceptionCode;
+import toyproject.qna.module.answer.dto.AnswerResponseDto;
+import toyproject.qna.module.answer.entity.Answer;
 import toyproject.qna.module.member.entity.Member;
 import toyproject.qna.module.member.service.MemberService;
+import toyproject.qna.module.question.dto.QuestionResponseDto;
 import toyproject.qna.module.question.entity.Question;
 import toyproject.qna.module.question.entity.QuestionTag;
 import toyproject.qna.module.question.repository.QuestionRepository;
@@ -14,7 +17,9 @@ import toyproject.qna.module.question.repository.QuestionTagRepository;
 import toyproject.qna.module.tag.entity.Tag;
 import toyproject.qna.module.tag.repository.TagRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,8 +61,19 @@ public class QuestionService {
         return findQuestion;
     }
 
+    @Transactional(readOnly = true)
+    public QuestionResponseDto findQuestion(Long questionId) {
+        Question question = findVerifiedQuestion(questionId);
 
-    private Question findVerifiedQuestion(Long questionId) {
+        List<AnswerResponseDto> answerResponseDtos = question.getAnswers().stream()
+                .map(answer -> AnswerResponseDto.of(answer))
+                .collect(Collectors.toList());
+
+       return QuestionResponseDto.of(question,answerResponseDtos);
+    }
+
+
+    public Question findVerifiedQuestion(Long questionId) {
         Optional<Question> question = questionRepository.findById(questionId);
 
         Question findQuestion = question.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));

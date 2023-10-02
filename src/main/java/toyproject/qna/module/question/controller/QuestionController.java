@@ -1,11 +1,14 @@
 package toyproject.qna.module.question.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import toyproject.qna.global.dto.SingleResponseDto;
 import toyproject.qna.global.utils.UriCreator;
 import toyproject.qna.module.question.dto.QuestionPatchDto;
 import toyproject.qna.module.question.dto.QuestionPostDto;
+import toyproject.qna.module.question.dto.QuestionResponseDto;
 import toyproject.qna.module.question.service.QuestionService;
 
 import javax.validation.Valid;
@@ -38,6 +41,14 @@ public class QuestionController {
         questionService.updateQuestion(questionId,questionPatchDto.toEntity(),questionPatchDto.getTags());
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{question-id}")
+    public ResponseEntity getQuestion(@PathVariable("question-id") Long questionId) {
+
+        QuestionResponseDto questionResponseDto = questionService.findQuestion(questionId);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(questionResponseDto), HttpStatus.OK);
     }
 
 
