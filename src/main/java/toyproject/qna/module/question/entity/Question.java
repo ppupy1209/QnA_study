@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.qna.global.entity.BaseEntity;
+import toyproject.qna.module.answer.entity.Answer;
 import toyproject.qna.module.member.entity.Member;
 
 import javax.persistence.*;
@@ -30,6 +31,9 @@ public class Question extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL)
+    private List<Answer> answers = new ArrayList<>();
 
     @Builder
     public Question(String title, String content,Member member) {
