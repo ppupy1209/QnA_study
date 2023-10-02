@@ -1,6 +1,7 @@
 package toyproject.qna.module.tag.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,5 +20,16 @@ public class Tag {
 
     @Column(name = "name")
     private String name;
+
+    @Builder
+    public Tag(String name) {
+        this.name = name;
+    }
+
+    public static Tag createTag(String name) {
+        return Tag.builder()
+                .name(name)
+                .build() ;
+    }
 
 }
