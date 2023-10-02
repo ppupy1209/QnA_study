@@ -1,6 +1,7 @@
 package toyproject.qna.module.answer.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.qna.global.entity.BaseEntity;
@@ -35,4 +36,16 @@ public class Answer extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
+    @Builder
+    public Answer(String content, Member member, Question question) {
+        this.content = content;
+        this.member = member;
+        this.question = question;
+    }
+    public void setMember(Member member) {
+        this.member = member;
+    }
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 }
