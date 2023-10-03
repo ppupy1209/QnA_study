@@ -7,3 +7,6 @@
 
 # Works
 ### [Go To Notion | N+1과 Fetch Join](https://heathered-creek-b2a.notion.site/N-1-Fetch-Join-98c4ff2f7bb24bf6815f38375b433f97?pvs=4)
+### [Go To Notion | default_batch_fetch_size](https://heathered-creek-b2a.notion.site/default_batch_fetch_size-91aec6853e3a448e9d345c04725f8f24?pvs=4)
+### [Go To Notion | OSIV](https://heathered-creek-b2a.notion.site/OSIV-ee3f039f8f6f47ef9fd510cede1cd85c?pvs=4)
+
