@@ -11,7 +11,7 @@ import java.util.List;
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query("select a from Answer a" +
-            " join fetch a.member" +
+            " join fetch a.member m" +
             " where question_id= :id")
     List<Answer> findWithMemberByQuestionId(@Param("id") Long id);
 }
