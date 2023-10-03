@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.qna.global.dto.MultiResponseDto;
+import toyproject.qna.global.dto.SingleResponseDto;
 import toyproject.qna.module.question.dto.QuestionListResponseDto;
 import toyproject.qna.module.question.entity.Question;
 import toyproject.qna.module.question.repository.QuestionRepository;
@@ -20,16 +21,16 @@ import java.util.stream.Collectors;
 public class QuestionQueryService {
 
       private final QuestionRepository questionRepository;
-      public MultiResponseDto findQuestionsQuery(int page,int size) {
+      public SingleResponseDto findQuestionsQuery(int page,int size) {
 
-          Page<Question> questions = questionRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
+          List<Question> questions = questionRepository.findWithMember(PageRequest.of(page, size, Sort.by("id").descending()));
 
 
-          List<QuestionListResponseDto> questionListResponseDtos = questions.getContent().stream()
+          List<QuestionListResponseDto> questionListResponseDtos = questions.stream()
                   .map(question -> QuestionListResponseDto.of(question))
                   .collect(Collectors.toList());
 
-          return new MultiResponseDto<>(questionListResponseDtos,questions);
+          return new SingleResponseDto<>(questionListResponseDtos);
       }
 }
 
