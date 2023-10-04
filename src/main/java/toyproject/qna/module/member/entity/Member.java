@@ -30,7 +30,6 @@ public class Member extends BaseEntity {
         this.age = age;
     }
 
-
     public void changeName(String name) {
         this.name = name;
     }
