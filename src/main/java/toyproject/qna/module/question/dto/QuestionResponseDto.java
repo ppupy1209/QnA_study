@@ -15,14 +15,17 @@ public class QuestionResponseDto {
     private String memberName;
     private String title;
     private String content;
+
+    private List<String> tags;
     private List<AnswerResponseDto> answers;
 
-    public static QuestionResponseDto of(Question question,List<AnswerResponseDto> answerResponseDtos) {
+    public static QuestionResponseDto of(Question question,List<AnswerResponseDto> answerResponseDtos,List<String> tags) {
         return QuestionResponseDto.builder()
                 .memberId(question.getMember().getId())
                 .memberName(question.getMember().getName())
                 .title(question.getTitle())
                 .content(question.getContent())
+                .tags(tags)
                 .answers(answerResponseDtos)
                 .build();
     }

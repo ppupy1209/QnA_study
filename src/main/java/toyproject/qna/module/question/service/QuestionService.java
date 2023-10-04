@@ -75,11 +75,17 @@ public class QuestionService {
 
         List<Answer> answers = answerRepository.findWithMemberByQuestionId(questionId); // 페치 조인
 
+        List<QuestionTag> questionTags = questionTagRepository.findByQuestionId(questionId);
+
+        List<String> tags = questionTags.stream()
+                .map(questionTag -> questionTag.getTag().getName())
+                .collect(Collectors.toList());
+
         List<AnswerResponseDto> answerResponseDtos = answers.stream()
                 .map(answer -> AnswerResponseDto.of(answer))
                 .collect(Collectors.toList());
 
-        return QuestionResponseDto.of(question, answerResponseDtos);
+        return QuestionResponseDto.of(question, answerResponseDtos,tags);
     }
 
     public void deleteQuestion(Long questionId) {
