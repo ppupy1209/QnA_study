@@ -2,12 +2,11 @@ package toyproject.qna.module.answer.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import toyproject.qna.global.utils.UriCreator;
+import toyproject.qna.module.answer.dto.AnswerPatchDto;
 import toyproject.qna.module.answer.dto.AnswerPostDto;
+import toyproject.qna.module.answer.entity.Answer;
 import toyproject.qna.module.answer.service.AnswerService;
 
 import javax.validation.Valid;
@@ -30,5 +29,14 @@ public class AnswerController {
         URI location = UriCreator.createUri(ANSWER_DEFAULT_URL,answerId);
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PatchMapping("/{answer-id}")
+    public ResponseEntity patchAnswer(@PathVariable("answer-id") Long answerId,
+                                      @Valid @RequestBody AnswerPatchDto answerPatchDto) {
+
+        answerService.updateAnswer(answerId,answerPatchDto.toEntity());
+
+        return ResponseEntity.ok().build();
     }
 }

@@ -4,12 +4,16 @@ package toyproject.qna.module.answer.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.qna.global.exception.BusinessLogicException;
+import toyproject.qna.global.exception.ExceptionCode;
 import toyproject.qna.module.answer.entity.Answer;
 import toyproject.qna.module.answer.repository.AnswerRepository;
 import toyproject.qna.module.member.entity.Member;
 import toyproject.qna.module.member.service.MemberService;
 import toyproject.qna.module.question.entity.Question;
 import toyproject.qna.module.question.service.QuestionService;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,5 +35,22 @@ public class AnswerService {
         Answer savedAnswer = answerRepository.save(createdAnswer);
 
         return savedAnswer.getId();
+    }
+
+    public Answer updateAnswer(Long answerId, Answer answer) {
+        Answer findAnswer = findVerifiedAnswer(answer.getId());
+
+        Optional.ofNullable(answer.getContent())
+                .ifPresent(content -> findAnswer.changeContent(content));
+
+        return findAnswer;
+    }
+
+    private Answer findVerifiedAnswer(Long answerId) {
+        Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
+
+        Answer answer = optionalAnswer.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
+
+        return answer;
     }
 }
