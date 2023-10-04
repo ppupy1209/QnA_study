@@ -48,7 +48,7 @@ public class QuestionService {
         Question savedQuestion = questionRepository.save(question);
 
         // Tag 가 포함되어 있다면 Tag 저장
-        if(tags.length!=0) saveTag(question, tags);
+        if (tags.length != 0) saveTag(question, tags);
 
         return savedQuestion.getId();
     }
@@ -61,10 +61,11 @@ public class QuestionService {
         Optional.ofNullable(question.getTitle())
                 .ifPresent(title -> findQuestion.changeTitle(title));
 
-//        if(tags.length!=0) {
-//            questionTagRepository.deleteByQuestionId(question.getId());
-//            saveTag(question,tags);
-//        }
+        // Tag 를 수정한다면 기존의 QuestionTag 를 삭제한 후 새로 저장
+        if (tags.length != 0) {
+            questionTagRepository.deleteByQuestion(findQuestion);
+            saveTag(findQuestion, tags);
+        }
 
         return findQuestion;
     }
@@ -79,7 +80,7 @@ public class QuestionService {
                 .map(answer -> AnswerResponseDto.of(answer))
                 .collect(Collectors.toList());
 
-       return QuestionResponseDto.of(question,answerResponseDtos);
+        return QuestionResponseDto.of(question, answerResponseDtos);
     }
 
     public void deleteQuestion(Long questionId) {
@@ -87,7 +88,6 @@ public class QuestionService {
 
         questionRepository.delete(question);
     }
-
 
 
     public Question findVerifiedQuestion(Long questionId) {
@@ -103,19 +103,20 @@ public class QuestionService {
         QuestionTag questionTag;
 
         for (String tag : tags) {
-             Optional<Tag> findTag = tagRepository.findByName(tag);
+            Optional<Tag> findTag = tagRepository.findByName(tag);
 
-             //  기존에 Tag 가 없다면
-             if(findTag.isEmpty()) {
-                 Tag createdTag = Tag.createTag(tag);
-                 tagRepository.save(createdTag);
-                 questionTag = QuestionTag.createQuestionTag(question, createdTag);
-             }
-             // 기존에 Tag 가 있다면
-             else {
-                 questionTag = QuestionTag.createQuestionTag(question,findTag.get());
-             }
-             questionTagRepository.save(questionTag);
+
+            if (findTag.isEmpty()) {
+                Tag createdTag = Tag.createTag(tag);
+                tagRepository.save(createdTag);
+                questionTag = QuestionTag.createQuestionTag(question, createdTag);
+            }
+
+            else {
+                questionTag = QuestionTag.createQuestionTag(question, findTag.get());
+            }
+            questionTagRepository.save(questionTag);
         }
     }
+
 }
