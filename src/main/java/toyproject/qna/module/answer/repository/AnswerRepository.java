@@ -8,10 +8,7 @@ import toyproject.qna.module.answer.entity.Answer;
 
 import java.util.List;
 
-public interface AnswerRepository extends JpaRepository<Answer, Long> {
+public interface AnswerRepository extends JpaRepository<Answer, Long>, AnswerRepositoryCustom{
 
-    @Query("select a from Answer a" +
-            " join fetch a.member m" +
-            " where question_id= :id")
-    List<Answer> findWithMemberByQuestionId(@Param("id") Long id);
+
 }

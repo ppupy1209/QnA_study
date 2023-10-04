@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.qna.global.dto.MultiResponseDto;
@@ -21,16 +22,15 @@ import java.util.stream.Collectors;
 public class QuestionQueryService {
 
       private final QuestionRepository questionRepository;
-      public SingleResponseDto findQuestionsQuery(int page,int size) {
+      public MultiResponseDto findQuestionsQuery(int page,int size) {
 
-          List<Question> questions = questionRepository.findWithMember(PageRequest.of(page, size, Sort.by("id").descending()));
+          Page<Question> questions = questionRepository.findWithMember(PageRequest.of(page, size, Sort.by("id").descending()));
 
-
-          List<QuestionListResponseDto> questionListResponseDtos = questions.stream()
+          List<QuestionListResponseDto> questionListResponseDtos = questions.getContent().stream()
                   .map(question -> QuestionListResponseDto.of(question))
                   .collect(Collectors.toList());
 
-          return new SingleResponseDto<>(questionListResponseDtos);
+          return new MultiResponseDto<>(questionListResponseDtos,questions);
       }
 }
 
