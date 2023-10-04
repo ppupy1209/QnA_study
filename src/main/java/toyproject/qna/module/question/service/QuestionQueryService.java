@@ -12,6 +12,7 @@ import toyproject.qna.global.dto.SingleResponseDto;
 import toyproject.qna.module.question.dto.QuestionListResponseDto;
 import toyproject.qna.module.question.entity.Question;
 import toyproject.qna.module.question.repository.QuestionRepository;
+import toyproject.qna.module.question.repository.QuestionTagRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 public class QuestionQueryService {
 
       private final QuestionRepository questionRepository;
+
+
       public MultiResponseDto findQuestionsQuery(int page,int size) {
 
           Page<Question> questions = questionRepository.findWithMember(PageRequest.of(page, size, Sort.by("id").descending()));
