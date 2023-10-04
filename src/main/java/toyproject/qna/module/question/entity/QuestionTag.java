@@ -1,6 +1,8 @@
 package toyproject.qna.module.question.entity;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import toyproject.qna.global.entity.BaseEntity;
 import toyproject.qna.module.tag.entity.Tag;
 
@@ -19,6 +21,7 @@ public class QuestionTag extends BaseEntity {
     @Column(name = "question_tag_id",updatable = false)
     private Long id;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
