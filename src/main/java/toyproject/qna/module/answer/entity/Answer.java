@@ -48,4 +48,8 @@ public class Answer extends BaseEntity {
     public void setQuestion(Question question) {
         this.question = question;
     }
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
 }
