@@ -33,7 +33,6 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionTagRepository questionTagRepository;
-
     private final AnswerRepository answerRepository;
     private final TagRepository tagRepository;
     private final MemberService memberService;
