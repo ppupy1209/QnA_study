@@ -38,13 +38,21 @@ public class AnswerService {
     }
 
     public Answer updateAnswer(Long answerId, Answer answer) {
-        Answer findAnswer = findVerifiedAnswer(answer.getId());
+        Answer findAnswer = findVerifiedAnswer(answerId);
 
         Optional.ofNullable(answer.getContent())
                 .ifPresent(content -> findAnswer.changeContent(content));
 
         return findAnswer;
     }
+
+   public void deleteAnswer(Long answerId) {
+        Answer findAnswer = findVerifiedAnswer(answerId);
+
+        answerRepository.delete(findAnswer);
+   }
+
+
 
     private Answer findVerifiedAnswer(Long answerId) {
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);

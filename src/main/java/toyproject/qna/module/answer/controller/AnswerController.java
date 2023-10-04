@@ -1,6 +1,7 @@
 package toyproject.qna.module.answer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import toyproject.qna.global.utils.UriCreator;
@@ -38,5 +39,13 @@ public class AnswerController {
         answerService.updateAnswer(answerId,answerPatchDto.toEntity());
 
         return ResponseEntity.ok().build();
+    }
+
+
+    @DeleteMapping("/{answer-id}")
+    public ResponseEntity deleteAnswer(@PathVariable("answer-id") Long answerId) {
+        answerService.deleteAnswer(answerId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
