@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface QuestionTagRepository extends JpaRepository<QuestionTag, Long> {
 
+    void deleteByQuestion(Question question);
 }
