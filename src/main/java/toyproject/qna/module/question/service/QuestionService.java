@@ -1,6 +1,9 @@
 package toyproject.qna.module.question.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.qna.global.exception.BusinessLogicException;
@@ -10,6 +13,7 @@ import toyproject.qna.module.answer.entity.Answer;
 import toyproject.qna.module.answer.repository.AnswerRepository;
 import toyproject.qna.module.member.entity.Member;
 import toyproject.qna.module.member.service.MemberService;
+import toyproject.qna.module.question.dto.QuestionListResponseDto;
 import toyproject.qna.module.question.dto.QuestionResponseDto;
 import toyproject.qna.module.question.entity.Question;
 import toyproject.qna.module.question.entity.QuestionTag;
@@ -33,6 +37,7 @@ public class QuestionService {
     private final AnswerRepository answerRepository;
     private final TagRepository tagRepository;
     private final MemberService memberService;
+
 
     public Long createQuestion(Long memberId, Question question, String[] tags) {
 
@@ -70,15 +75,19 @@ public class QuestionService {
 
         List<Answer> answers = answerRepository.findWithMemberByQuestionId(questionId); // 페치 조인
 
-        List<AnswerResponseDto> answerResponseDtos = answers.stream() 
+        List<AnswerResponseDto> answerResponseDtos = answers.stream()
                 .map(answer -> AnswerResponseDto.of(answer))
                 .collect(Collectors.toList());
 
        return QuestionResponseDto.of(question,answerResponseDtos);
     }
 
-//    @Transactional(readOnly = true)
-//    public List<Que>
+    public void deleteQuestion(Long questionId) {
+        Question question = findVerifiedQuestion(questionId);
+
+        questionRepository.delete(question);
+    }
+
 
 
     public Question findVerifiedQuestion(Long questionId) {
