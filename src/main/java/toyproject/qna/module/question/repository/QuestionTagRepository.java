@@ -6,7 +6,7 @@ import toyproject.qna.module.question.entity.QuestionTag;
 
 import java.util.List;
 
-public interface QuestionTagRepository extends JpaRepository<QuestionTag, Long> {
+public interface QuestionTagRepository extends JpaRepository<QuestionTag, Long>,QuestionTagRepositoryCustom {
 
     void deleteByQuestion(Question question);
 }
