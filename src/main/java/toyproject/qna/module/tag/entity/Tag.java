@@ -29,7 +29,7 @@ public class Tag {
     public static Tag createTag(String name) {
         return Tag.builder()
                 .name(name)
-                .build() ;
+                .build();
     }
 
 }
