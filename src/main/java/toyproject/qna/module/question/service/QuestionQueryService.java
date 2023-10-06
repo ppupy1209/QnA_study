@@ -29,9 +29,7 @@ public class QuestionQueryService {
 
           Page<Question> questions = questionRepository.findWithMember(PageRequest.of(page, size, Sort.by("id").descending()));
 
-          List<QuestionListResponseDto> questionListResponseDtos = questions.getContent().stream()
-                  .map(question -> QuestionListResponseDto.of(question))
-                  .collect(Collectors.toList());
+          List<QuestionListResponseDto> questionListResponseDtos = QuestionListResponseDto.of(questions.getContent());
 
           return new MultiResponseDto<>(questionListResponseDtos,questions);
       }

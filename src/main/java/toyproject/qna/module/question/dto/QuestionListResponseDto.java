@@ -7,6 +7,7 @@ import toyproject.qna.module.question.entity.Question;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Builder
@@ -26,5 +27,11 @@ public class QuestionListResponseDto {
                 .createdAt(question.getCreatedAt())
                 .lastModifiedAt(question.getLastModifiedAt())
                 .build();
+    }
+
+    public static List<QuestionListResponseDto> of(List<Question> questions) {
+        return questions.stream()
+                .map(question -> QuestionListResponseDto.of(question))
+                .collect(Collectors.toList());
     }
 }
