@@ -26,11 +26,7 @@ public class AnswerService {
         Member member = memberService.findMember(memberId);
         Question question = questionService.findVerifiedQuestion(questionId);
 
-        Answer createdAnswer = Answer.builder()
-                .content(answer.getContent())
-                .member(member)
-                .question(question)
-                .build();
+        Answer createdAnswer = Answer.createAnswer(answer.getContent(), member, question);
 
         Answer savedAnswer = answerRepository.save(createdAnswer);
 
