@@ -1,9 +1,6 @@
 package toyproject.qna.module.question.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.qna.global.exception.BusinessLogicException;
@@ -13,7 +10,6 @@ import toyproject.qna.module.answer.entity.Answer;
 import toyproject.qna.module.answer.repository.AnswerRepository;
 import toyproject.qna.module.member.entity.Member;
 import toyproject.qna.module.member.service.MemberService;
-import toyproject.qna.module.question.dto.QuestionListResponseDto;
 import toyproject.qna.module.question.dto.QuestionResponseDto;
 import toyproject.qna.module.question.entity.Question;
 import toyproject.qna.module.question.entity.QuestionTag;
@@ -77,15 +73,17 @@ public class QuestionService {
 
         List<QuestionTag> questionTags = questionTagRepository.findByQuestionId(questionId);
 
-        List<String> tags = questionTags.stream()
-                .map(questionTag -> questionTag.getTag().getName())
-                .collect(Collectors.toList());
+        List<String> tags = getTagNameList(questionTags);
 
-        List<AnswerResponseDto> answerResponseDtos = answers.stream()
-                .map(answer -> AnswerResponseDto.of(answer))
-                .collect(Collectors.toList());
+        List<AnswerResponseDto> answerResponseDtos = AnswerResponseDto.of(answers);
 
         return QuestionResponseDto.of(question, answerResponseDtos,tags);
+    }
+
+    private static List<String> getTagNameList(List<QuestionTag> questionTags) {
+        return questionTags.stream()
+                .map(questionTag -> questionTag.getTag().getName())
+                .collect(Collectors.toList());
     }
 
     public void deleteQuestion(Long questionId) {
