@@ -52,4 +52,12 @@ public class Answer extends BaseEntity {
     public void changeContent(String content) {
         this.content = content;
     }
+
+    public static Answer createAnswer(String content, Member member, Question question) {
+        return Answer.builder()
+                .content(content)
+                .member(member)
+                .question(question)
+                .build();
+    }
 }
