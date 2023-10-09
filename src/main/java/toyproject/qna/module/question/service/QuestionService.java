@@ -69,7 +69,7 @@ public class QuestionService {
     public QuestionResponseDto findQuestion(Long questionId) {
         Question question = findVerifiedQuestion(questionId);
 
-        List<Answer> answers = answerRepository.findWithMemberByQuestionId(questionId); // 페치 조인
+        List<Answer> answers = answerRepository.findAnswersByQuestionId(questionId); // 페치 조인
 
         List<QuestionTag> questionTags = questionTagRepository.findByQuestionId(questionId);
 

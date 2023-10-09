@@ -20,7 +20,7 @@ public class AnswerRepositoryImpl implements AnswerRepositoryCustom{
     }
 
     @Override
-    public List<Answer> findWithMemberByQuestionId(Long id) {
+    public List<Answer> findAnswersByQuestionId(Long id) {
         return queryFactory.selectFrom(answer)
                 .join(answer.member, member).fetchJoin()
                 .where(answer.question.id.eq(id))
