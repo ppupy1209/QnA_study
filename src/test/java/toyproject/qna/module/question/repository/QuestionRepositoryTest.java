@@ -18,10 +18,8 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 class QuestionRepositoryTest {
-
     @Autowired
     private QuestionRepository questionRepository;
-
     @Autowired
     private MemberRepository memberRepository;
 
@@ -60,16 +58,16 @@ class QuestionRepositoryTest {
                         tuple("제목 2","내용 2")
                 );
     }
-    
 
-    private static Member createMember() {
+
+    private Member createMember() {
         return Member.builder()
                 .age(10)
                 .name("test")
                 .build();
     }
 
-    private static Question createQuestion(String title, String content, Member member) {
+    private Question createQuestion(String title, String content, Member member) {
         return Question.builder()
                 .title(title)
                 .content(content)
