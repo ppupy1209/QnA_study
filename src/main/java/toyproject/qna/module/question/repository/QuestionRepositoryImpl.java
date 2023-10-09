@@ -25,7 +25,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom{
 
 
     @Override
-    public Page<Question> findWithMember(Pageable pageable) {
+    public Page<Question> findQuestionsWithMember(Pageable pageable) {
         QueryResults<Question> results = queryFactory.selectFrom(question)
                 .innerJoin(question.member, member)
                 .fetchJoin()
