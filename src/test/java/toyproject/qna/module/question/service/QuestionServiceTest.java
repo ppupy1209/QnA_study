@@ -86,14 +86,14 @@ class QuestionServiceTest {
                 .build();
         Question savedQuestion = questionRepository.save(question);
 
-        Question updateTitleQuestion = Question.builder()
+        Question updateTitleOfQuestion = Question.builder()
                 .title("제목 수정")
                 .build();
 
         String[] tags = {"test"};
 
         // when
-        Question updatedTitleQuestion = questionService.updateQuestion(savedQuestion.getId(), updateTitleQuestion, tags);
+        Question updatedTitleQuestion = questionService.updateQuestion(savedQuestion.getId(), updateTitleOfQuestion, tags);
 
         // then
         assertThat(updatedTitleQuestion.getTitle()).isEqualTo("제목 수정");

@@ -32,20 +32,56 @@ class MemberControllerTest {
     @DisplayName("멤버를 등록한다.")
     @Test
     void postMember() throws Exception {
-    // given
+        // given
         MemberPostDto request = MemberPostDto.builder()
                 .name("홍길동")
                 .age(10)
                 .build();
 
-    // when
+        // when & then
         mockMvc.perform(post("/members")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
+    }
 
-    // then
+    @DisplayName("멤버를 등록할 때 이름은 필수값이다.")
+    @Test
+    void postMemberWithoutName() throws Exception {
+        // given
+        MemberPostDto request = MemberPostDto.builder()
+                .age(10)
+                .build();
+
+        // when & then
+        mockMvc.perform(post("/members")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+                .andExpect(jsonPath("$.fieldErrors[0].reason").value("이름은 필수 항목입니다."));
+    }
+
+    @DisplayName("멤버를 등록할 때 나이의 최솟값은 1이다.")
+    @Test
+    void postMemberWith0Age() throws Exception {
+        // given
+        MemberPostDto request = MemberPostDto.builder()
+                .name("홍길동")
+                .age(0)
+                .build();
+
+        // when & then
+        mockMvc.perform(post("/members")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("age"))
+                .andExpect(jsonPath("$.fieldErrors[0].rejectedValue").value(0))
+                .andExpect(jsonPath("$.fieldErrors[0].reason").value("나이 최솟값은 1 입니다."));
     }
 
 

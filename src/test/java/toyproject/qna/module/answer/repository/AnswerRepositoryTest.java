@@ -25,7 +25,7 @@ class AnswerRepositoryTest {
     @Autowired
     private QuestionRepository questionRepository;
 
-    @DisplayName("질문에 대한 잡변을 조회한다.")
+    @DisplayName("질문에 대한 답변을 조회한다.")
     @Test
     void findAnswersByQuestionId() {
         // given
@@ -40,10 +40,10 @@ class AnswerRepositoryTest {
         answerRepository.saveAll(List.of(answer1,answer2,answer3));
 
         // when
-        List<Answer> answers1 = answerRepository.findAnswersByQuestionId(question1.getId());
+        List<Answer> answers = answerRepository.findAnswersByQuestionId(question1.getId());
 
         // then
-        assertThat(answers1).hasSize(2)
+        assertThat(answers).hasSize(2)
                 .extracting("content")
                 .containsExactlyInAnyOrder("답변 내용 1","답변 내용 2");
     }
