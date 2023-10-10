@@ -1,6 +1,7 @@
 package toyproject.qna.module.member.dto;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import toyproject.qna.module.member.entity.Member;
 import javax.validation.constraints.Min;
@@ -20,5 +21,11 @@ public class MemberPostDto {
                 .name(name)
                 .age(age)
                 .build();
+    }
+
+    @Builder
+    public MemberPostDto(String name, Integer age) {
+        this.name = name;
+        this.age = age;
     }
 }
