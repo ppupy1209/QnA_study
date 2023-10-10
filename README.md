@@ -1,4 +1,4 @@
-# Purpose
+# Toy Project
 다양한 것을 공부하며 적용할 toy project 입니다. <br>
 질문과 답변이 있는 간단한 게시판입니다. <br><br>
 ![db schema](https://github.com/ppupy1209/QnA_study/assets/64067205/58f567d5-9d97-4bd1-abc1-9bfcd2b5ce23)
