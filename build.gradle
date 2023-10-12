@@ -40,6 +40,7 @@ dependencies {
 	testImplementation "org.mockito:mockito-core:3.+"
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation 'org.thymeleaf:thymeleaf:3.0.12.RELEASE'
 }
 
 tasks.named('test') {
