@@ -57,6 +57,7 @@ class StockServiceTest {
     }
 
 
+    @DisplayName("동시성 테스트")
     @Test
     void test2() throws InterruptedException {
         // given
@@ -74,7 +75,6 @@ class StockServiceTest {
                 }
             });
         }
-
         latch.await();
 
         Stock stock = stockRepository.findById(1L).orElseThrow();
