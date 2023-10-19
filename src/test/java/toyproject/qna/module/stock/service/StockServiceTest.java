@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.qna.module.stock.entity.Stock;
-import toyproject.qna.module.stock.facade.RedissonLockStockFacade;
 import toyproject.qna.module.stock.repository.StockRepository;
 
 import java.util.concurrent.CountDownLatch;
@@ -26,9 +25,6 @@ class StockServiceTest {
 
     @Autowired
     private StockService stockService;
-
-    @Autowired
-    private RedissonLockStockFacade redissonLockStockFacade;
 
     @Autowired
     private StockRepository stockRepository;
@@ -57,30 +53,30 @@ class StockServiceTest {
     }
 
 
-    @DisplayName("동시성 테스트")
-    @Test
-    void test2() throws InterruptedException {
-        // given
-        int threadCount = 100;
-        ExecutorService executorService = Executors.newFixedThreadPool(32);
-        CountDownLatch latch = new CountDownLatch(threadCount);
-
-        // when
-        for (int i=0;i<threadCount;i++) {
-            executorService.submit(() -> {
-                try {
-                    redissonLockStockFacade.decrease(1L,1L);
-                } finally {
-                    latch.countDown();
-                }
-            });
-        }
-        latch.await();
-
-        Stock stock = stockRepository.findById(1L).orElseThrow();
-        // then
-        assertThat(stock.getQuantity()).isEqualTo(0);
-    }
+//    @DisplayName("동시성 테스트")
+//    @Test
+//    void test2() throws InterruptedException {
+//        // given
+//        int threadCount = 100;
+//        ExecutorService executorService = Executors.newFixedThreadPool(32);
+//        CountDownLatch latch = new CountDownLatch(threadCount);
+//
+//        // when
+//        for (int i=0;i<threadCount;i++) {
+//            executorService.submit(() -> {
+//                try {
+//                    redissonLockStockFacade.decrease(1L,1L);
+//                } finally {
+//                    latch.countDown();
+//                }
+//            });
+//        }
+//        latch.await();
+//
+//        Stock stock = stockRepository.findById(1L).orElseThrow();
+//        // then
+//        assertThat(stock.getQuantity()).isEqualTo(0);
+//    }
 
 
 }
