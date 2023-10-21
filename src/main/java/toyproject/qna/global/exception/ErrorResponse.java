@@ -2,6 +2,7 @@ package toyproject.qna.global.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,12 +22,14 @@ public class ErrorResponse {
         return new ErrorResponse(exceptionCode.getStatus(),exceptionCode.getMessage());
     }
 
-    public ErrorResponse(final List<FieldError> fieldErrors) {
+    public ErrorResponse(final List<FieldError> fieldErrors,int status,String message) {
         this.fieldErrors = fieldErrors;
+        this.status = status;
+        this.message = message;
     }
 
     public static ErrorResponse of(BindingResult bindingResult) {
-        return new ErrorResponse(FieldError.of(bindingResult));
+        return new ErrorResponse(FieldError.of(bindingResult),400,"Field Error");
     }
 
     @AllArgsConstructor
