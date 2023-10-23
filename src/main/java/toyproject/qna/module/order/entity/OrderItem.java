@@ -1,6 +1,7 @@
 package toyproject.qna.module.order.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -32,4 +33,27 @@ public class OrderItem {
 
     @Column(name = "count")
     private int count;
+
+    @Builder
+    public OrderItem(Item item,  int orderPrice, int count) {
+        this.item = item;
+        this.orderPrice = orderPrice;
+        this.count = count;
+    }
+
+    public static OrderItem createOrderItem(Item item, int price, int quantity) {
+
+        item.removeStock(quantity);
+
+        return OrderItem.builder()
+                .item(item)
+                .orderPrice(price)
+                .count(quantity)
+                .build();
+
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

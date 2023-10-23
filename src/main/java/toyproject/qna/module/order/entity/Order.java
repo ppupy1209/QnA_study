@@ -1,6 +1,7 @@
 package toyproject.qna.module.order.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.qna.global.entity.BaseEntity;
@@ -36,4 +37,28 @@ public class Order extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    @Builder
+    public Order(Member member, Delivery delivery,OrderStatus orderStatus) {
+        this.member = member;
+        this.delivery = delivery;
+        this.orderStatus = orderStatus;
+    }
+
+    public static Order createOrder(Member member, Delivery delivery, OrderItem orderItem) {
+        Order order = Order.builder()
+                .member(member)
+                .delivery(delivery)
+                .orderStatus(OrderStatus.ORDER)
+                .build();
+
+        order.addOrderItem(orderItem);
+
+        return order;
+    }
 }

@@ -1,6 +1,7 @@
 package toyproject.qna.module.delivery.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.qna.module.address.Address;
@@ -28,5 +29,15 @@ public class Delivery {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 
+    @Builder
+    public Delivery(Address address) {
+        this.address = address;
+        this.deliveryStatus = DeliveryStatus.READY;
+    }
 
+    public static Delivery createDelivery(Address address) {
+        return Delivery.builder()
+                .address(address)
+                .build();
+    }
 }

@@ -22,4 +22,14 @@ public class Address {
         this.street = street;
         this.zipcode = zipcode;
     }
+
+    public static Address createAddress(String city, String street, String zipcode) {
+        Address address = Address.builder()
+                .city(city)
+                .street(street)
+                .zipcode(zipcode)
+                .build();
+
+        return address;
+    }
 }
