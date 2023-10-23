@@ -23,6 +23,7 @@ public abstract class Item extends BaseEntity {
     private int stockQuantity;
 
 
+
     public void addStock(int quantity) {
         this.stockQuantity += quantity;
     }

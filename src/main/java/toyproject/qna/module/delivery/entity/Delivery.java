@@ -1,7 +1,8 @@
-package toyproject.qna.module.delivery;
+package toyproject.qna.module.delivery.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
-import org.springframework.data.domain.PageRequest;
+import lombok.NoArgsConstructor;
 import toyproject.qna.module.address.Address;
 import toyproject.qna.module.order.entity.Order;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
 public class Delivery {
@@ -25,4 +27,6 @@ public class Delivery {
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
+
+
 }

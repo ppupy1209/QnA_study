@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.qna.global.entity.BaseEntity;
-import toyproject.qna.module.delivery.Delivery;
+import toyproject.qna.module.delivery.entity.Delivery;
 import toyproject.qna.module.member.entity.Member;
 
 import javax.persistence.*;

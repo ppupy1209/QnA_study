@@ -27,6 +27,9 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @Column(name = "order_price")
     private int orderPrice;
+
+    @Column(name = "count")
     private int count;
 }
