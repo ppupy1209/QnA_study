@@ -1,6 +1,7 @@
 package toyproject.qna.module.order.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import toyproject.qna.global.utils.UriCreator;
@@ -25,6 +26,12 @@ public class OrderController {
         URI location = UriCreator.createUri(ORDER_DEFAULT_URL, orderId);
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping
+    public ResponseEntity findOrders(@RequestParam int page,
+                                     @RequestParam int size) {
+        return new ResponseEntity<>(orderService.findOrders(page-1,size), HttpStatus.OK);
     }
 
     @PostMapping("/{order-id}/cancel")
