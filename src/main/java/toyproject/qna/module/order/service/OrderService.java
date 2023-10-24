@@ -58,6 +58,7 @@ public class OrderService {
         order.cancel();
     }
 
+    @Transactional(readOnly = true)
     public MultiResponseDto findOrders(int page, int size) {
         Page<Order> pagedOrders = orderRepository.findOrdersWithMemberAndDelivery(PageRequest.of(page,size));
         List<Order> orders = pagedOrders.getContent();
