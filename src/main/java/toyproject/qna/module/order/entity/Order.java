@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.qna.global.entity.BaseEntity;
 import toyproject.qna.module.delivery.entity.Delivery;
+import toyproject.qna.module.delivery.entity.DeliveryStatus;
 import toyproject.qna.module.member.entity.Member;
 
 import javax.persistence.*;
@@ -38,6 +39,10 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    public void changeOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
     public void addOrderItem(OrderItem orderItem) {
         this.orderItems.add(orderItem);
         orderItem.setOrder(this);
@@ -50,15 +55,31 @@ public class Order extends BaseEntity {
         this.orderStatus = orderStatus;
     }
 
-    public static Order createOrder(Member member, Delivery delivery, OrderItem orderItem) {
+    public static Order createOrder(Member member, Delivery delivery, List<OrderItem> orderItems) {
         Order order = Order.builder()
                 .member(member)
                 .delivery(delivery)
                 .orderStatus(OrderStatus.ORDER)
                 .build();
 
-        order.addOrderItem(orderItem);
+        for (OrderItem orderItem : orderItems) {
+                order.addOrderItem(orderItem);
+        }
+
 
         return order;
+    }
+
+    public void cancel() {
+        if(delivery.getDeliveryStatus()== DeliveryStatus.COMP) {
+            throw new IllegalStateException("이미 배송완료된 상품입니다.");
+        }
+
+        this.changeOrderStatus(OrderStatus.CANCEL);
+        delivery.changeDeliveryStatus(DeliveryStatus.CANCEL);
+
+        for(OrderItem orderItem : orderItems) {
+            orderItem.cancel();
+        }
     }
 }
