@@ -2,10 +2,7 @@ package toyproject.qna.module.order.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import toyproject.qna.global.utils.UriCreator;
 import toyproject.qna.module.order.dto.OrderPostDto;
 import toyproject.qna.module.order.service.OrderService;
@@ -28,6 +25,13 @@ public class OrderController {
         URI location = UriCreator.createUri(ORDER_DEFAULT_URL, orderId);
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PostMapping("/{order-id}/cancel")
+    public ResponseEntity cancelOrder(@PathVariable ("order-id") Long orderId) {
+        orderService.cancelOrder(orderId);
+
+        return ResponseEntity.ok().build();
     }
 
 }
