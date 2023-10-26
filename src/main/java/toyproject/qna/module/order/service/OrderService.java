@@ -33,12 +33,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberService memberService;
     private final ItemService itemService;
-    public Long createOrder(OrderPostDto orderPostDto) {
-        Member member = memberService.findMember(orderPostDto.getMemberId());
-        Address address = Address.createAddress(orderPostDto.getCity(), orderPostDto.getStreet(), orderPostDto.getZipcode());
+    public Long createOrder(Long memberId, List<OrderItemDto> orderItemDto, String city, String street, String zipcode) {
+        Member member = memberService.findMember(memberId);
+        Address address = Address.createAddress(city, street, zipcode);
         Delivery delivery = Delivery.createDelivery(address);
 
-        List<OrderItemDto> items = orderPostDto.getItems();
+        List<OrderItemDto> items = orderItemDto;
         List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItemDto item : items) {
             Item findItem = itemService.findItem(item.getItemId());
