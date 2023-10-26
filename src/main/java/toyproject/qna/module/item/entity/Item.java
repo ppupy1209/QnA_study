@@ -33,7 +33,7 @@ public class Item extends BaseEntity {
 
     public void removeStock(int quantity) {
         int restStock = this.stockQuantity;
-        if(restStock<0) {
+        if(restStock-quantity<0) {
             throw new RuntimeException("need more stock");
         }
         this.stockQuantity -= quantity;
