@@ -62,11 +62,12 @@ class OrderServiceTest {
         Long orderId = orderService.createOrder(member.getId(), orderItemDtos, "seoul", "street1", "123-123");
         List<OrderItem> orderItems = orderItemRepository.findAll();
         List<Delivery> delivery = deliveryRepository.findAll();
-        
+
         // then
         assertThat(orderId).isNotNull();
         assertThat(orderItems).hasSize(2);
         assertThat(delivery).hasSize(1);
+        
     }
 
     private static OrderItemDto createOrderItemDto(long itemId, int quantity) {
