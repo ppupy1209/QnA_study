@@ -67,7 +67,7 @@ class OrderServiceTest {
         assertThat(orderId).isNotNull();
         assertThat(orderItems).hasSize(2);
         assertThat(delivery).hasSize(1);
-        
+
     }
 
     private static OrderItemDto createOrderItemDto(long itemId, int quantity) {
