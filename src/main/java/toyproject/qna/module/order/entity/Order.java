@@ -37,17 +37,20 @@ public class Order extends BaseEntity {
     private Delivery delivery;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus orderStatus;  // ORDER, CANCEL
 
+    // Setter
     public void changeOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
+    // OrderItem 추가
     public void addOrderItem(OrderItem orderItem) {
         this.orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
 
+    // Builder
     @Builder
     public Order(Member member, Delivery delivery,OrderStatus orderStatus) {
         this.member = member;
@@ -55,6 +58,7 @@ public class Order extends BaseEntity {
         this.orderStatus = orderStatus;
     }
 
+    // 생성 메서드
     public static Order createOrder(Member member, Delivery delivery, List<OrderItem> orderItems) {
         Order order = Order.builder()
                 .member(member)
@@ -68,6 +72,7 @@ public class Order extends BaseEntity {
         return order;
     }
 
+    // 주문 취소
     public void cancel() {
         if(delivery.getDeliveryStatus()== DeliveryStatus.COMP) {
             throw new IllegalStateException("이미 배송완료된 상품입니다.");
