@@ -20,6 +20,7 @@ public class Item extends BaseEntity {
     private int price;
     private int stockQuantity;
 
+    // Builder
     @Builder
     public Item(String name, int price, int stockQuantity) {
         this.name = name;
@@ -27,10 +28,13 @@ public class Item extends BaseEntity {
         this.stockQuantity = stockQuantity;
     }
 
+    // 재고 추가 메서드
+
     public void addStock(int quantity) {
         this.stockQuantity += quantity;
     }
 
+    // 재고 감소 메서드
     public void removeStock(int quantity) {
         int restStock = this.stockQuantity;
         if(restStock-quantity<0) {
