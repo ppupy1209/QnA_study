@@ -8,7 +8,7 @@ import toyproject.qna.global.exception.ExceptionCode;
 import toyproject.qna.module.item.entity.Item;
 import toyproject.qna.module.item.repository.ItemRepository;
 
-import javax.print.DocFlavor;
+
 import java.util.Optional;
 
 @Transactional(readOnly = true)
@@ -19,6 +19,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
 
+    // 아이템 조회 메서드
     public Item findItem(Long itemId) {
         Optional<Item> optionalItem = itemRepository.findById(itemId);
 
