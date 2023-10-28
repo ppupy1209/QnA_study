@@ -29,19 +29,23 @@ public class Delivery {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 
+    // Setter
     public void changeDeliveryStatus(DeliveryStatus deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
     }
 
+    // Builder
     @Builder
     public Delivery(Address address) {
         this.address = address;
         this.deliveryStatus = DeliveryStatus.READY;
     }
 
+    // 생성 메서드
     public static Delivery createDelivery(Address address) {
         return Delivery.builder()
                 .address(address)
                 .build();
     }
+    
 }
