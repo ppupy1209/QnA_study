@@ -16,6 +16,8 @@ public class Address {
     private String street;
     private String zipcode;
 
+
+    // Builder
     @Builder
     public Address(String city, String street, String zipcode) {
         this.city = city;
@@ -23,6 +25,7 @@ public class Address {
         this.zipcode = zipcode;
     }
 
+    // 생성 메서드
     public static Address createAddress(String city, String street, String zipcode) {
         Address address = Address.builder()
                 .city(city)
