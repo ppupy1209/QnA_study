@@ -29,7 +29,6 @@ public class Item extends BaseEntity {
     }
 
     // 재고 추가 메서드
-
     public void addStock(int quantity) {
         this.stockQuantity += quantity;
     }
