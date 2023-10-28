@@ -8,8 +8,10 @@ import toyproject.qna.module.order.entity.OrderItem;
 @Getter
 @Builder
 public class OrderItemDto {
-
+    // 주문할 아이템 ID
     private Long itemId;
+
+    // 주문 수량
     private int quantity;
 
     public static OrderItemDto of(OrderItem orderItem) {
