@@ -1,7 +1,6 @@
 package toyproject.qna.module.order.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,6 @@ import toyproject.qna.global.exception.ExceptionCode;
 import toyproject.qna.module.address.Address;
 import toyproject.qna.module.delivery.entity.Delivery;
 import toyproject.qna.module.item.entity.Item;
-import toyproject.qna.module.item.repository.ItemRepository;
 import toyproject.qna.module.item.servcie.ItemService;
 import toyproject.qna.module.member.entity.Member;
 import toyproject.qna.module.member.service.MemberService;
@@ -35,24 +33,19 @@ public class OrderService {
     private final ItemService itemService;
 
     // 주문 생성
-    public Long createOrder(Long memberId, List<OrderItemDto> orderItemDto, String city, String street, String zipcode) {
-        Member member = memberService.findMember(memberId);
-        Address address = Address.createAddress(city, street, zipcode);
+    public Long createOrder(OrderPostDto orderPostDto) {
+        Member member = memberService.findMember(orderPostDto.getMemberId());
+        Address address = Address.createAddress(orderPostDto.getCity(), orderPostDto.getStreet(), orderPostDto.getZipcode());
         Delivery delivery = Delivery.createDelivery(address);
 
-        List<OrderItemDto> items = orderItemDto;
-        List<OrderItem> orderItems = new ArrayList<>();
-        for (OrderItemDto item : items) {
-            Item findItem = itemService.findItem(item.getItemId());
-            OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(),item.getQuantity());
-            orderItems.add(orderItem);
-        }
+        List<OrderItem> orderItems = createOrderItems(orderPostDto.getItems());
 
         Order order = Order.createOrder(member,delivery,orderItems);
         Order saveOrder = orderRepository.save(order);
 
         return saveOrder.getId();
     }
+
 
     // 주문 취소
     public void cancelOrder(Long orderId) {
@@ -79,7 +72,15 @@ public class OrderService {
         return order;
     }
 
-
-
+    // OrderItem 생성
+    private List<OrderItem> createOrderItems(List<OrderItemDto> items) {
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (OrderItemDto item : items) {
+            Item findItem = itemService.findItem(item.getItemId());
+            OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(),item.getQuantity());
+            orderItems.add(orderItem);
+        }
+        return orderItems;
+    }
 
 }
