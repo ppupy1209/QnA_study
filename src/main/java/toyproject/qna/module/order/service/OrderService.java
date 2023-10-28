@@ -33,6 +33,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberService memberService;
     private final ItemService itemService;
+
+    // 주문 생성
     public Long createOrder(Long memberId, List<OrderItemDto> orderItemDto, String city, String street, String zipcode) {
         Member member = memberService.findMember(memberId);
         Address address = Address.createAddress(city, street, zipcode);
@@ -52,14 +54,14 @@ public class OrderService {
         return saveOrder.getId();
     }
 
-
-
+    // 주문 취소
     public void cancelOrder(Long orderId) {
         Order order = findVerifiedOrder(orderId);
 
         order.cancel();
     }
 
+    // 주문 리스트 조회
     @Transactional(readOnly = true)
     public MultiResponseDto findOrders(int page, int size) {
         Page<Order> pagedOrders = orderRepository.findOrdersWithMemberAndDelivery(PageRequest.of(page,size));
@@ -68,6 +70,7 @@ public class OrderService {
         return new MultiResponseDto<>(OrderResponseDto.of(orders),pagedOrders);
     }
 
+    // 단건 주문 조회
     private Order findVerifiedOrder(Long orderId) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
 
