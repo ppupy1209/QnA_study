@@ -58,8 +58,10 @@ class OrderServiceTest {
         OrderItemDto orderItemDto2 = createOrderItemDto(2L, 4);
         List<OrderItemDto> orderItemDtos = List.of(orderItemDto1,orderItemDto2);
 
+        OrderPostDto orderPostDto = createOrderPostDto(member, orderItemDtos);
+
         // when
-        Long orderId = orderService.createOrder(member.getId(), orderItemDtos, "seoul", "street1", "123-123");
+        Long orderId = orderService.createOrder(orderPostDto);
         List<OrderItem> orderItems = orderItemRepository.findAll();
         List<Delivery> delivery = deliveryRepository.findAll();
 
@@ -68,6 +70,16 @@ class OrderServiceTest {
         assertThat(orderItems).hasSize(2);
         assertThat(delivery).hasSize(1);
 
+    }
+
+    private static OrderPostDto createOrderPostDto(Member member, List<OrderItemDto> orderItemDtos) {
+        return OrderPostDto.builder()
+                .memberId(member.getId())
+                .items(orderItemDtos)
+                .city("city")
+                .street("street")
+                .zipcode("zipcode")
+                .build();
     }
 
     private static OrderItemDto createOrderItemDto(long itemId, int quantity) {
