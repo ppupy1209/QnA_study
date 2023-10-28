@@ -21,7 +21,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity postOrder(@Valid @RequestBody OrderPostDto orderPostDto) {
-        Long orderId = orderService.createOrder(orderPostDto.getMemberId(),orderPostDto.getItems(),orderPostDto.getCity(),orderPostDto.getStreet(),orderPostDto.getZipcode());
+        Long orderId = orderService.createOrder(orderPostDto);
 
         URI location = UriCreator.createUri(ORDER_DEFAULT_URL, orderId);
 
