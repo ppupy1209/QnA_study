@@ -50,7 +50,7 @@ dependencies {
 
 	// querydsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}
+	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 
 	// thymeleaf
 	implementation 'org.thymeleaf:thymeleaf:3.0.12.RELEASE'
