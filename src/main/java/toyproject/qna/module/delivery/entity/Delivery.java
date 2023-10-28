@@ -27,7 +27,7 @@ public class Delivery {
     private Address address;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatus deliveryStatus;
+    private DeliveryStatus deliveryStatus; // READY, CANCEL, COMP
 
     // Setter
     public void changeDeliveryStatus(DeliveryStatus deliveryStatus) {
@@ -47,5 +47,5 @@ public class Delivery {
                 .address(address)
                 .build();
     }
-    
+
 }
