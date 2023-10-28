@@ -65,8 +65,6 @@ public class Order extends BaseEntity {
         for (OrderItem orderItem : orderItems) {
                 order.addOrderItem(orderItem);
         }
-
-
         return order;
     }
 
