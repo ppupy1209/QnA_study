@@ -34,6 +34,7 @@ public class OrderItem {
     @Column(name = "count")
     private int count;
 
+    // Builder
     @Builder
     public OrderItem(Item item,  int orderPrice, int count) {
         this.item = item;
@@ -41,6 +42,7 @@ public class OrderItem {
         this.count = count;
     }
 
+    // 생성 메서드
     public static OrderItem createOrderItem(Item item, int price, int quantity) {
 
         item.removeStock(quantity);
@@ -53,10 +55,12 @@ public class OrderItem {
 
     }
 
+    // Setter
     public void setOrder(Order order) {
         this.order = order;
     }
 
+    // 주문 취소
     public void cancel() {
         this.getItem().addStock(count);
     }
