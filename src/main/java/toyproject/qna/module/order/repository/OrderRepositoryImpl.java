@@ -43,4 +43,16 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom{
 
         return new PageImpl<>(orders,pageable,total);
     }
+
+    @Override
+    public List<Order> findOrdersByMemberId(Long memberId) {
+        return queryFactory.select(order)
+                .from(order)
+                .join(order.member, member)
+                .fetchJoin()
+                .join(order.delivery, delivery)
+                .fetchJoin()
+                .where(member.id.eq(memberId))
+                .fetch();
+    }
 }
