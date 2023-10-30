@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.qna.global.exception.BusinessLogicException;
 import toyproject.qna.global.exception.ExceptionCode;
+import toyproject.qna.module.member.dto.MemberResponseDto;
 import toyproject.qna.module.member.entity.Member;
 import toyproject.qna.module.member.repository.MemberRepository;
+import toyproject.qna.module.order.entity.Order;
+import toyproject.qna.module.order.repository.OrderRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +23,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final OrderRepository orderRepository;
 
     public Long createMember(Member member) {
         validateDuplicateMember(member); // 중복 회원 체크
@@ -43,8 +47,11 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Member findMember(Long memberId) {
-        return findVerifiedMember(memberId);
+    public MemberResponseDto findMember(Long memberId) {
+        Member member = findVerifiedMember(memberId);
+        List<Order> orders = orderRepository.findOrdersByMemberId(memberId);
+
+        return MemberResponseDto.of(member,orders);
     }
 
     @Transactional(readOnly = true)
@@ -59,7 +66,7 @@ public class MemberService {
     }
 
 
-    private Member findVerifiedMember(Long memberId) {
+    public Member findVerifiedMember(Long memberId) {
         Optional<Member> member = memberRepository.findById(memberId);
 
         Member findMember = member.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
