@@ -36,7 +36,7 @@ public class QuestionService {
 
     public Long createQuestion(Long memberId, Question question, String[] tags) {
 
-        Member member = memberService.findMember(memberId);
+        Member member = memberService.findVerifiedMember(memberId);
 
         question.setMember(member);
 
