@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import toyproject.qna.module.member.entity.Member;
 import toyproject.qna.module.member.repository.MemberRepository;
+import toyproject.qna.module.order.dto.OrderResponseDto;
+import toyproject.qna.module.order.entity.Order;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,17 +20,16 @@ public class MemberResponseDto {
     private String name;
     private Integer age;
 
-    public static MemberResponseDto of(Member member) {
+    private List<OrderResponseDto> orders;
+
+    public static MemberResponseDto of(Member member, List<Order> orders) {
         return new MemberResponseDto(
                 member.getId(),
                 member.getName(),
-                member.getAge()
+                member.getAge(),
+                OrderResponseDto.of(orders)
         );
     }
 
-    public static List<MemberResponseDto> of(List<Member> members) {
-        return members.stream()
-                .map(member -> new MemberResponseDto(member.getId(), member.getName(), member.getAge()))
-                .collect(Collectors.toList());
-    }
+
 }
