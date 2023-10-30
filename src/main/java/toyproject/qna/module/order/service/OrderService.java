@@ -34,7 +34,7 @@ public class OrderService {
 
     // 주문 생성
     public Long createOrder(OrderPostDto orderPostDto) {
-        Member member = memberService.findMember(orderPostDto.getMemberId());
+        Member member = memberService.findVerifiedMember(orderPostDto.getMemberId());
         Address address = Address.createAddress(orderPostDto.getCity(), orderPostDto.getStreet(), orderPostDto.getZipcode());
         Delivery delivery = Delivery.createDelivery(address);
 
