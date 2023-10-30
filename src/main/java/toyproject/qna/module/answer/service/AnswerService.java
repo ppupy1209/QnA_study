@@ -23,7 +23,7 @@ public class AnswerService {
     private final MemberService memberService;
     private final QuestionService questionService;
     public Long createAnswer(Long memberId, Long questionId, Answer answer) {
-        Member member = memberService.findMember(memberId);
+        Member member = memberService.findVerifiedMember(memberId);
         Question question = questionService.findVerifiedQuestion(questionId);
 
         Answer createdAnswer = Answer.createAnswer(answer.getContent(), member, question);
