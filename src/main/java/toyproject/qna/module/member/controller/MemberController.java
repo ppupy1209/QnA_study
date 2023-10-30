@@ -47,18 +47,18 @@ public class MemberController {
 
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(@PathVariable("member-id") Long memberId) {
-        Member member = memberService.findMember(memberId);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(MemberResponseDto.of(member)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(memberService.findMember(memberId)), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity getMembers(@Positive @RequestParam int page,
-                                     @Positive @RequestParam int size) {
-        Page<Member> pageMembers = memberService.findMembers(page-1,size);
-        List<Member> members = pageMembers.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(MemberResponseDto.of(members),pageMembers),HttpStatus.OK);
-    }
+    // TODO MemberListResponse
+//    @GetMapping
+//    public ResponseEntity getMembers(@Positive @RequestParam int page,
+//                                     @Positive @RequestParam int size) {
+//        Page<Member> pageMembers = memberService.findMembers(page-1,size);
+//        List<Member> members = pageMembers.getContent();
+//        return new ResponseEntity<>(new MultiResponseDto<>(MemberResponseDto.of(members),pageMembers),HttpStatus.OK);
+//    }
 
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") Long memberId) {
