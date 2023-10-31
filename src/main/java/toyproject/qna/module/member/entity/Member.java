@@ -5,9 +5,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.w3c.dom.stylesheets.LinkStyle;
 import toyproject.qna.global.entity.BaseEntity;
+import toyproject.qna.module.order.entity.Order;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,6 +28,9 @@ public class Member extends BaseEntity {
 
     @Column(name = "age")
     private Integer age;
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
 
     @Builder
     public Member(String name, Integer age) {
