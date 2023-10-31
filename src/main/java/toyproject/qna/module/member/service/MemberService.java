@@ -54,11 +54,6 @@ public class MemberService {
         return MemberResponseDto.of(member,orders);
     }
 
-    @Transactional(readOnly = true)
-    public Page<Member> findMembers(int page, int size) {
-        return memberRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
-    }
-
     public void deleteMember(Long memberId) {
         Member member = findVerifiedMember(memberId);
 
