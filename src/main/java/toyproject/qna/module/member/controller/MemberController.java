@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import toyproject.qna.global.dto.MultiResponseDto;
 import toyproject.qna.global.dto.SingleResponseDto;
 import toyproject.qna.global.utils.UriCreator;
+import toyproject.qna.module.member.dto.MemberListResponseDto;
 import toyproject.qna.module.member.dto.MemberPatchDto;
 import toyproject.qna.module.member.dto.MemberPostDto;
 import toyproject.qna.module.member.dto.MemberResponseDto;
 import toyproject.qna.module.member.entity.Member;
+import toyproject.qna.module.member.service.MemberQueryService;
 import toyproject.qna.module.member.service.MemberService;
 
 import javax.validation.Valid;
@@ -26,6 +28,7 @@ public class MemberController {
 
     private final static  String MEMBER_DEFAULT_URL = "/members";
     private final MemberService memberService;
+    private final MemberQueryService memberQueryService;
 
     @PostMapping
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
@@ -51,14 +54,13 @@ public class MemberController {
         return new ResponseEntity<>(new SingleResponseDto<>(memberService.findMember(memberId)), HttpStatus.OK);
     }
 
-    // TODO MemberListResponse
-//    @GetMapping
-//    public ResponseEntity getMembers(@Positive @RequestParam int page,
-//                                     @Positive @RequestParam int size) {
-//        Page<Member> pageMembers = memberService.findMembers(page-1,size);
-//        List<Member> members = pageMembers.getContent();
-//        return new ResponseEntity<>(new MultiResponseDto<>(MemberResponseDto.of(members),pageMembers),HttpStatus.OK);
-//    }
+
+    @GetMapping
+    public ResponseEntity getMembers(@Positive @RequestParam int page,
+                                     @Positive @RequestParam int size) {
+
+        return new ResponseEntity<>(memberQueryService.findMembers(page-1,size),HttpStatus.OK);
+    }
 
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") Long memberId) {
